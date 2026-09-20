@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -18,6 +18,11 @@ const navItems = [
 export function Navbar() {
   const [activeSection, setActiveSection] = useState("home");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const { scrollY } = useScroll();
+  const backdropBlur = useTransform(scrollY, [0, 150], [12, 20]);
+  const borderOpacity = useTransform(scrollY, [0, 150], [0.08, 0.2]);
+  const bgOpacity = useTransform(scrollY, [0, 150], [0.55, 0.75]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -52,13 +57,28 @@ export function Navbar() {
     <motion.header
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none"
+      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      className="pointer-events-none fixed left-0 right-0 top-4 z-50 flex justify-center px-4 sm:top-6"
     >
-      <nav className={twMerge(clsx("glass pointer-events-auto w-full max-w-2xl rounded-full border border-white/10 px-6 py-3 flex items-center justify-between shadow-lg"))}>
-        {/* Logo */}
-        <div className="text-xl font-bold text-white tracking-tighter cursor-pointer hover:opacity-80 transition-opacity">
+      <motion.nav 
+        className="pointer-events-auto flex w-full max-w-4xl items-center justify-between rounded-2xl border px-4 py-2.5 shadow-lg sm:rounded-full sm:px-6 sm:py-3"
+        style={{
+          backgroundColor: useTransform(bgOpacity, (v) => `rgba(24, 24, 27, ${v})`),
+          backdropFilter: useTransform(backdropBlur, (v) => `blur(${v}px)`),
+          WebkitBackdropFilter: useTransform(backdropBlur, (v) => `blur(${v}px)`),
+          borderColor: useTransform(borderOpacity, (v) => `rgba(255, 255, 255, ${v})`),
+        }}
+      >
+        {/* Logo with hover animation */}
+        <motion.a 
+          href="#home" 
+          onClick={(e) => handleScroll(e, "#home")} 
+          className="text-xl font-bold tracking-tighter text-white transition-opacity hover:opacity-80"
+          whileHover={{ scale: 1.08, rotate: -2 }}
+          whileTap={{ scale: 0.95 }}
+        >
           V<span className="text-cyan-400">.</span>
-        </div>
+        </motion.a>
 
         {/* Desktop Nav */}
         <ul className="hidden md:flex items-center space-x-1">
@@ -75,7 +95,7 @@ export function Navbar() {
                 {activeSection === item.href.substring(1) && (
                   <motion.div
                     layoutId="navbar-active"
-                    className="absolute inset-0 bg-cyan-400/10 rounded-full"
+                    className="absolute inset-0 bg-cyan-400/10 rounded-full shadow-[0_0_10px_rgba(6,182,212,0.1)]"
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   />
                 )}
@@ -87,12 +107,13 @@ export function Navbar() {
 
         {/* Mobile Toggle */}
         <button
-          className="md:hidden p-2 text-gray-300 hover:text-white focus:outline-none"
+          aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+          className="p-2 text-gray-300 transition-colors hover:text-white focus:outline-none md:hidden"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
-      </nav>
+      </motion.nav>
 
       {/* Mobile Menu */}
       <AnimatePresence>
@@ -101,7 +122,7 @@ export function Navbar() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute top-20 left-4 right-4 glass border border-white/10 rounded-2xl p-4 md:hidden shadow-xl"
+            className="glass absolute left-4 right-4 top-16 rounded-2xl border border-white/10 p-4 shadow-xl md:hidden"
           >
             <ul className="flex flex-col space-y-2">
               {navItems.map((item) => (

@@ -68,7 +68,11 @@ function SectionDivider() {
       whileInView={{ opacity: 1, scaleX: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8 }}
-      className="mx-auto my-4 h-px max-w-4xl bg-gradient-to-r from-transparent via-zinc-700 to-transparent"
-    />
+      className="relative mx-auto my-6 flex max-w-4xl items-center justify-center"
+    >
+      <div className="h-px flex-1 bg-gradient-to-r from-transparent via-cyan-500/25 to-transparent" />
+      <div className="mx-4 h-2 w-2 rotate-45 rounded-[2px] bg-cyan-400/40 shadow-[0_0_8px_rgba(6,182,212,0.3)]" />
+      <div className="h-px flex-1 bg-gradient-to-r from-transparent via-cyan-500/25 to-transparent" />
+    </motion.div>
   );
 }

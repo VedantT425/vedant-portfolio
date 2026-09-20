@@ -66,26 +66,31 @@ const skillsData: Skill[] = [
   { name: 'Generative AI', category: 'AI & Analytics' },
 ];
 
-const categoryStyles: Record<Category, { dot: string, badge: string }> = {
+const categoryStyles: Record<Category, { dot: string; badge: string; glowColor: string }> = {
   'Languages': { 
-    dot: 'bg-cyan-400 group-hover:scale-125 group-hover:shadow-[0_0_10px_#22d3ee]', 
-    badge: 'hover:border-cyan-400 hover:bg-cyan-950/40 hover:shadow-[0_0_20px_rgba(6,182,212,0.35)] text-zinc-300 hover:text-white' 
+    dot: 'bg-cyan-400', 
+    badge: 'hover:border-cyan-400/50 hover:bg-cyan-950/30 hover:shadow-[0_0_20px_rgba(6,182,212,0.25)]',
+    glowColor: 'rgba(6, 182, 212, 0.12)',
   },
   'Frontend': { 
-    dot: 'bg-violet-400 group-hover:scale-125 group-hover:shadow-[0_0_10px_#a78bfa]', 
-    badge: 'hover:border-violet-400 hover:bg-violet-950/40 hover:shadow-[0_0_20px_rgba(139,92,246,0.35)] text-zinc-300 hover:text-white' 
+    dot: 'bg-sky-400', 
+    badge: 'hover:border-sky-400/50 hover:bg-sky-950/30 hover:shadow-[0_0_20px_rgba(14,165,233,0.25)]',
+    glowColor: 'rgba(14, 165, 233, 0.12)',
   },
   'Backend & APIs': { 
-    dot: 'bg-emerald-400 group-hover:scale-125 group-hover:shadow-[0_0_10px_#34d399]', 
-    badge: 'hover:border-emerald-400 hover:bg-emerald-950/40 hover:shadow-[0_0_20px_rgba(16,185,129,0.35)] text-zinc-300 hover:text-white' 
+    dot: 'bg-emerald-400', 
+    badge: 'hover:border-emerald-400/50 hover:bg-emerald-950/30 hover:shadow-[0_0_20px_rgba(16,185,129,0.25)]',
+    glowColor: 'rgba(16, 185, 129, 0.12)',
   },
   'Databases & Cloud': { 
-    dot: 'bg-blue-400 group-hover:scale-125 group-hover:shadow-[0_0_10px_#60a5fa]', 
-    badge: 'hover:border-blue-400 hover:bg-blue-950/40 hover:shadow-[0_0_20px_rgba(59,130,246,0.35)] text-zinc-300 hover:text-white' 
+    dot: 'bg-blue-400', 
+    badge: 'hover:border-blue-400/50 hover:bg-blue-950/30 hover:shadow-[0_0_20px_rgba(59,130,246,0.25)]',
+    glowColor: 'rgba(59, 130, 246, 0.12)',
   },
   'AI & Analytics': { 
-    dot: 'bg-rose-400 group-hover:scale-125 group-hover:shadow-[0_0_10px_#fb7185]', 
-    badge: 'hover:border-rose-400 hover:bg-rose-950/40 hover:shadow-[0_0_20px_rgba(244,63,94,0.35)] text-zinc-300 hover:text-white' 
+    dot: 'bg-rose-400', 
+    badge: 'hover:border-rose-400/50 hover:bg-rose-950/30 hover:shadow-[0_0_20px_rgba(244,63,94,0.25)]',
+    glowColor: 'rgba(244, 63, 94, 0.12)',
   },
 };
 
@@ -96,63 +101,97 @@ export default function SkillsMatrix() {
     (skill) => skill.category === activeFilter
   );
 
-  return (
-    <section id="skills" className="container mx-auto py-20 px-4 sm:px-6">
-      <div className="flex flex-col gap-10">
-        <motion.h2 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-4xl md:text-5xl font-bold gradient-text text-center"
-        >
-          Technical Requirement
-        </motion.h2>
+  const skillCount = filteredSkills.length;
+  const activeStyle = categoryStyles[activeFilter];
 
-        {/* Filter Bar */}
-        <div className="flex flex-wrap justify-center gap-3">
-          {categories.map((cat) => (
-            <motion.button
-              key={cat}
-              onClick={() => setActiveFilter(cat)}
-              whileHover={{ scale: 1.06, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              className={cn(
-                "px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 cursor-pointer select-none",
-                activeFilter === cat 
-                  ? "bg-cyan-500 text-zinc-950 shadow-[0_0_20px_rgba(6,182,212,0.5)] border border-cyan-400" 
-                  : "bg-zinc-900/90 text-zinc-300 border border-zinc-800 hover:bg-zinc-800 hover:text-white hover:border-zinc-600 hover:shadow-[0_0_12px_rgba(255,255,255,0.08)]"
-              )}
-            >
-              {cat}
-            </motion.button>
-          ))}
+  return (
+    <section id="skills" className="section-shell relative">
+      {/* Category-colored ambient glow behind skills */}
+      <motion.div
+        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[120px]"
+        animate={{ backgroundColor: activeStyle.glowColor }}
+        transition={{ duration: 0.8, ease: "easeInOut" }}
+      />
+
+      <div className="flex flex-col gap-10">
+        <div className="text-center">
+          <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="section-kicker">My toolkit</motion.p>
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="section-heading gradient-text"
+          >
+            Technical Skills
+          </motion.h2>
+          <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="section-intro mx-auto">
+            The tools I use to design, build, ship and improve full-stack products.
+          </motion.p>
         </div>
 
-        {/* Skills Grid */}
+        {/* Filter Bar with count */}
+        <div className="flex flex-wrap justify-center gap-2.5">
+          {categories.map((cat) => {
+            const count = skillsData.filter(s => s.category === cat).length;
+            return (
+              <motion.button
+                key={cat}
+                onClick={() => setActiveFilter(cat)}
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.96 }}
+                className={cn(
+                  "relative px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer select-none",
+                  activeFilter === cat 
+                    ? "bg-cyan-500 text-zinc-950 shadow-[0_0_24px_rgba(6,182,212,0.4)] border border-cyan-400" 
+                    : "bg-zinc-900/80 text-zinc-400 border border-zinc-800 hover:bg-zinc-800 hover:text-white hover:border-zinc-600"
+                )}
+              >
+                {cat}
+                {activeFilter === cat && (
+                  <span className="ml-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-zinc-900/30 text-[11px] font-bold">
+                    {count}
+                  </span>
+                )}
+              </motion.button>
+            );
+          })}
+        </div>
+
+        {/* Skills Grid with staggered animation */}
         <motion.div 
           layout
-          className="flex flex-wrap justify-center gap-4 mt-4"
+          className="flex flex-wrap justify-center gap-3.5 mt-4"
         >
           <AnimatePresence mode="popLayout">
-            {filteredSkills.map((skill) => {
+            {filteredSkills.map((skill, index) => {
               const style = categoryStyles[skill.category];
               
               return (
                 <motion.div
                   key={skill.name}
                   layout
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.25 }}
+                  initial={{ opacity: 0, scale: 0.85, y: 12 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.85, y: -8 }}
+                  transition={{ 
+                    duration: 0.3, 
+                    delay: index * 0.04,
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 22
+                  }}
                   whileHover={{ scale: 1.08, y: -3 }}
                   whileTap={{ scale: 0.96 }}
                   className={cn(
-                    "group relative flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 transition-all duration-200 cursor-pointer select-none",
+                    "group relative flex items-center gap-3 px-5 py-3 rounded-full bg-zinc-900/70 backdrop-blur-sm border border-zinc-800 transition-all duration-300 cursor-pointer select-none text-zinc-300 hover:text-white",
                     style.badge
                   )}
                 >
-                  <div className={cn("w-2.5 h-2.5 rounded-full transition-all duration-200", style.dot)} />
+                  {/* Category-colored left bar accent */}
+                  <div className={cn(
+                    "h-4 w-[3px] rounded-full transition-all duration-300 group-hover:h-5 group-hover:shadow-[0_0_6px]",
+                    style.dot
+                  )} />
                   <span className="text-sm font-medium tracking-wide transition-colors duration-200">{skill.name}</span>
                 </motion.div>
               );

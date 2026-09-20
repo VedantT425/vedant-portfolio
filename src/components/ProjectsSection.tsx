@@ -77,17 +77,23 @@ export function ProjectsSection() {
   const [activeTab, setActiveTab] = useState<"live" | "register" | "dashboard">("live");
 
   return (
-    <section id="projects" className="py-24 relative z-10">
-      <div className="container mx-auto px-6 max-w-6xl">
+    <section id="projects" className="section-shell relative z-10 max-w-6xl">
+      <div className="mb-12">
+        <p className="section-kicker">Selected work</p>
+        <h2 className="section-heading gradient-text">Featured Project</h2>
+        <p className="section-intro">
+          A production-focused computer vision platform that combines real-time recognition, secure data handling and useful analytics.
+        </p>
+      </div>
         
 
         {/* Master Project Showcase Card */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="relative bg-zinc-900/60 backdrop-blur-xl border border-zinc-800 hover:border-zinc-700/80 rounded-3xl p-6 md:p-10 shadow-2xl overflow-hidden"
+          initial={{ opacity: 0, y: 30, scale: 0.98 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ type: "spring", stiffness: 200, damping: 22 }}
+          className="surface-card relative overflow-hidden rounded-3xl p-6 shadow-2xl md:p-10"
         >
           {/* Subtle Ambient Radial Gradients */}
           <div className="absolute -top-32 -right-32 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -97,7 +103,11 @@ export function ProjectsSection() {
           <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-zinc-800/80">
             <div className="flex flex-wrap items-center gap-3">
               <span className="px-3 py-1 text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 rounded-full flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60"></span>
+                  <span className="absolute inline-flex h-[150%] w-[150%] -left-[25%] -top-[25%] animate-ping rounded-full bg-emerald-400/20" style={{ animationDuration: '2s' }}></span>
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
+                </span>
                 {flagshipProject.status}
               </span>
               <span className="px-3 py-1 text-xs font-medium bg-zinc-800/80 text-zinc-300 border border-zinc-700/50 rounded-full">
@@ -122,6 +132,7 @@ export function ProjectsSection() {
                 href={flagshipProject.loginUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Open Admin Management Portal in a new tab"
                 className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-medium bg-zinc-800/80 hover:bg-zinc-700 text-zinc-200 hover:text-white rounded-xl transition-colors border border-zinc-700/60"
                 title="Admin Management Portal"
               >
@@ -220,9 +231,16 @@ export function ProjectsSection() {
                         </div>
                       </div>
 
-                      {/* Video Area */}
+                      {/* Video Area with viewfinder corners */}
                       <div className="relative h-48 sm:h-56 bg-zinc-950/90 rounded-lg my-3 flex items-center justify-center overflow-hidden border border-zinc-800/60">
-                        <div className="absolute inset-0 dot-grid-bg opacity-30 pointer-events-none" />
+                        {/* Viewfinder corner brackets */}
+                        <div className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-cyan-400/40 rounded-tl pointer-events-none" />
+                        <div className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-cyan-400/40 rounded-tr pointer-events-none" />
+                        <div className="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-cyan-400/40 rounded-bl pointer-events-none" />
+                        <div className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-cyan-400/40 rounded-br pointer-events-none" />
+                        {/* Timestamp overlay */}
+                        <span className="absolute top-3 right-8 text-[9px] font-mono text-cyan-400/50 pointer-events-none">REC 00:03:42</span>
+                        <div className="absolute inset-0 dot-grid-bg opacity-20 pointer-events-none" />
                         <div className="absolute inset-x-0 h-0.5 bg-cyan-400/30 animate-[scan-line_3s_ease-in-out_infinite]" />
 
                         {/* Detected Bounding Box */}
@@ -287,7 +305,7 @@ export function ProjectsSection() {
 
                         <div className="p-3 bg-zinc-900/50 border border-zinc-800 rounded-xl flex items-center justify-between text-xs">
                           <div className="flex items-center gap-2.5">
-                            <div className="w-7 h-7 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-xs">
+                            <div className="w-7 h-7 rounded-full bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold text-xs">
                               AP
                             </div>
                             <div>
@@ -400,7 +418,7 @@ export function ProjectsSection() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
                       <div className="bg-zinc-900/80 border border-zinc-800 rounded-xl p-4">
-                        <p className="text-xs text-zinc-400">Today's Present Ratio</p>
+                        <p className="text-xs text-zinc-400">Today&apos;s Present Ratio</p>
                         <p className="text-2xl font-bold text-emerald-400 mt-1">92.4%</p>
                         <div className="w-full bg-zinc-800 h-2 rounded-full mt-3 overflow-hidden">
                           <div className="bg-emerald-400 h-full rounded-full" style={{ width: "92.4%" }} />
@@ -465,10 +483,13 @@ export function ProjectsSection() {
               href={flagshipProject.live}
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-2.5 px-6 py-3.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-zinc-950 font-bold text-sm rounded-full shadow-lg shadow-cyan-500/20 hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] transition-all cursor-pointer group"
+              aria-label="Open Live Demo in a new tab"
+              whileHover={{ scale: 1.04, y: -2 }}
+              whileTap={{ scale: 0.96 }}
+              className="group relative flex items-center gap-2.5 px-6 py-3.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-zinc-950 font-bold text-sm rounded-full shadow-lg shadow-cyan-500/20 hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] transition-all cursor-pointer overflow-hidden"
             >
+              {/* Shimmer sweep */}
+              <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
               <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-zinc-950 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-zinc-950"></span>
@@ -491,6 +512,7 @@ export function ProjectsSection() {
               href={flagshipProject.loginUrl}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Open Admin Portal in a new tab"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
               className="flex items-center gap-2 px-5 py-3.5 bg-zinc-900 hover:bg-zinc-850 text-zinc-300 hover:text-white rounded-full font-medium text-sm transition-all border border-zinc-800 hover:border-zinc-600 hover:shadow-lg cursor-pointer"
@@ -514,8 +536,6 @@ export function ProjectsSection() {
           </div>
 
         </motion.div>
-      </div>
-
       {/* Deep Dive Architecture Modal */}
       <ProjectModal
         isOpen={selectedProject !== null}

@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Copy, Check, ExternalLink } from 'lucide-react';
 import { clsx } from 'clsx';
 
-/* GitHub icon removed from lucide-react — inline SVG replacement */
+/* GitHub icon inline SVG */
 function GithubIcon({ className = "" }: { className?: string }) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -55,18 +55,25 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-20 px-6 max-w-6xl mx-auto relative">
+    <section id="contact" className="section-shell relative max-w-6xl">
+      {/* Ambient glow */}
+      <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-500/[0.06] blur-[100px]" />
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="text-4xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-zinc-200 to-zinc-500 gradient-text">
-          Let's Connect
-        </h2>
+        <div className="mb-12 text-center">
+          <p className="section-kicker">Start a conversation</p>
+          <h2 className="section-heading gradient-text">
+            Let&apos;s Connect
+          </h2>
+          <p className="section-intro mx-auto">Have an idea, opportunity or simply want to talk tech? Send a message and I&apos;ll get back to you.</p>
+        </div>
 
-        <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
+        <div className="grid gap-10 md:grid-cols-2 lg:gap-20">
           
           {/* Left Column: Form */}
           <div>
@@ -80,8 +87,10 @@ export default function ContactSection() {
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   onBlur={() => handleBlur('name')}
                   className={clsx(
-                    "peer w-full bg-zinc-900 border rounded-xl px-4 pt-6 pb-2 text-zinc-100 focus:outline-none transition-colors",
-                    errors.name ? "border-red-500" : "border-zinc-800 focus:border-cyan-400"
+                    "peer w-full rounded-xl border bg-zinc-900/80 px-4 pb-2 pt-6 text-zinc-100 transition-all duration-300 focus:outline-none",
+                    errors.name 
+                      ? "border-red-500" 
+                      : "border-zinc-800 focus:border-cyan-400 focus:shadow-[0_0_16px_rgba(6,182,212,0.12)]"
                   )}
                   placeholder=" "
                 />
@@ -103,8 +112,10 @@ export default function ContactSection() {
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   onBlur={() => handleBlur('email')}
                   className={clsx(
-                    "peer w-full bg-zinc-900 border rounded-xl px-4 pt-6 pb-2 text-zinc-100 focus:outline-none transition-colors",
-                    errors.email ? "border-red-500" : "border-zinc-800 focus:border-cyan-400"
+                    "peer w-full rounded-xl border bg-zinc-900/80 px-4 pb-2 pt-6 text-zinc-100 transition-all duration-300 focus:outline-none",
+                    errors.email 
+                      ? "border-red-500" 
+                      : "border-zinc-800 focus:border-cyan-400 focus:shadow-[0_0_16px_rgba(6,182,212,0.12)]"
                   )}
                   placeholder=" "
                 />
@@ -118,15 +129,20 @@ export default function ContactSection() {
                 {errors.email && <p className="text-red-500 text-xs mt-1 ml-1">{errors.email}</p>}
               </div>
 
+              {/* Gradient submit button with shimmer */}
               <motion.button
                 type="submit"
                 disabled={!isFormValid || isSubmitting}
                 whileHover={isFormValid && !isSubmitting ? { scale: 1.02, y: -1 } : {}}
                 whileTap={isFormValid && !isSubmitting ? { scale: 0.98 } : {}}
-                className="w-full flex items-center justify-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-zinc-950 font-bold py-3.5 rounded-xl transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.6)] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                className="group relative w-full flex items-center justify-center gap-2 overflow-hidden bg-gradient-to-r from-cyan-500 via-teal-400 to-cyan-500 text-zinc-950 font-bold py-3.5 rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(6,182,212,0.25)] hover:shadow-[0_0_32px_rgba(6,182,212,0.45)] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
-                {isSubmitting ? "Connecting..." : "Get In Touch"}
-                <Send className="w-4 h-4" />
+                {/* Shimmer sweep */}
+                <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+                <span className="relative z-10 flex items-center gap-2">
+                  {isSubmitting ? "Connecting..." : "Get In Touch"}
+                  <Send className="w-4 h-4" />
+                </span>
               </motion.button>
             </form>
 
@@ -150,16 +166,16 @@ export default function ContactSection() {
           <div className="space-y-4">
             {/* Email Card */}
             <motion.div 
-              whileHover={{ y: -4, scale: 1.01 }}
-              className="bg-zinc-900/60 border border-zinc-800 p-5 rounded-2xl flex items-center justify-between hover:border-cyan-400/60 hover:shadow-[0_0_25px_rgba(6,182,212,0.15)] transition-all cursor-pointer group"
+              whileHover={{ y: -3, scale: 1.01 }}
+              className="surface-card group flex cursor-pointer items-center justify-between p-5"
             >
               <div>
                 <p className="text-sm text-zinc-500 mb-1">Email</p>
-                <p className="text-zinc-200 group-hover:text-white transition-colors">vedantripathi05@gmail.com</p>
+                <p className="text-zinc-200 group-hover:text-white transition-colors">{`vedantripathi05@gmail.com`}</p>
               </div>
               <button 
                 onClick={() => handleCopy('vedantripathi05@gmail.com', 'email')}
-                className="p-2.5 bg-zinc-800 rounded-lg hover:bg-zinc-750 text-zinc-400 hover:text-white transition-all cursor-pointer hover:scale-110"
+                className="p-2.5 bg-zinc-800 rounded-lg hover:bg-zinc-700 text-zinc-400 hover:text-white transition-all cursor-pointer hover:scale-105 hover:shadow-[0_0_10px_rgba(6,182,212,0.15)]"
                 title="Copy Email"
               >
                 {copiedField === 'email' ? <Check className="w-5 h-5 text-green-400" /> : <Copy className="w-5 h-5" />}
@@ -168,8 +184,8 @@ export default function ContactSection() {
 
             {/* Phone Card */}
             <motion.div 
-              whileHover={{ y: -4, scale: 1.01 }}
-              className="bg-zinc-900/60 border border-zinc-800 p-5 rounded-2xl flex items-center justify-between hover:border-cyan-400/60 hover:shadow-[0_0_25px_rgba(6,182,212,0.15)] transition-all cursor-pointer group"
+              whileHover={{ y: -3, scale: 1.01 }}
+              className="surface-card group flex cursor-pointer items-center justify-between p-5"
             >
               <div>
                 <p className="text-sm text-zinc-500 mb-1">Phone</p>
@@ -177,7 +193,7 @@ export default function ContactSection() {
               </div>
               <button 
                 onClick={() => handleCopy('+918815471744', 'phone')}
-                className="p-2.5 bg-zinc-800 rounded-lg hover:bg-zinc-750 text-zinc-400 hover:text-white transition-all cursor-pointer hover:scale-110"
+                className="p-2.5 bg-zinc-800 rounded-lg hover:bg-zinc-700 text-zinc-400 hover:text-white transition-all cursor-pointer hover:scale-105 hover:shadow-[0_0_10px_rgba(6,182,212,0.15)]"
                 title="Copy Phone"
               >
                 {copiedField === 'phone' ? <Check className="w-5 h-5 text-green-400" /> : <Copy className="w-5 h-5" />}
@@ -190,9 +206,9 @@ export default function ContactSection() {
                 href="https://linkedin.com/in/vedant-tripathi-800896273"
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ scale: 1.04, y: -3 }}
+                whileHover={{ scale: 1.03, y: -3 }}
                 whileTap={{ scale: 0.97 }}
-                className="flex-1 bg-zinc-900/60 border border-zinc-800 p-4 rounded-2xl flex items-center justify-center gap-2 hover:border-cyan-400/60 hover:shadow-[0_0_20px_rgba(6,182,212,0.25)] hover:text-white transition-all cursor-pointer group"
+                className="flex-1 bg-zinc-900/60 border border-zinc-800 p-4 rounded-2xl flex items-center justify-center gap-2 hover:border-cyan-400/40 hover:shadow-[0_0_20px_rgba(6,182,212,0.15)] hover:text-white transition-all duration-300 cursor-pointer group"
               >
                 <span className="text-zinc-300 font-medium group-hover:text-white transition-colors">LinkedIn</span>
                 <ExternalLink className="w-4 h-4 text-zinc-500 group-hover:text-cyan-400 transition-colors" />
@@ -202,9 +218,9 @@ export default function ContactSection() {
                 href="https://github.com/VedantT425"
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ scale: 1.04, y: -3 }}
+                whileHover={{ scale: 1.03, y: -3 }}
                 whileTap={{ scale: 0.97 }}
-                className="flex-1 bg-zinc-900/60 border border-zinc-800 p-4 rounded-2xl flex items-center justify-center gap-2 hover:border-cyan-400/60 hover:shadow-[0_0_20px_rgba(6,182,212,0.25)] hover:text-white transition-all cursor-pointer group"
+                className="flex-1 bg-zinc-900/60 border border-zinc-800 p-4 rounded-2xl flex items-center justify-center gap-2 hover:border-cyan-400/40 hover:shadow-[0_0_20px_rgba(6,182,212,0.15)] hover:text-white transition-all duration-300 cursor-pointer group"
               >
                 <GithubIcon className="w-5 h-5 text-zinc-300 group-hover:text-white transition-colors" />
                 <span className="text-zinc-300 font-medium group-hover:text-white transition-colors">GitHub</span>

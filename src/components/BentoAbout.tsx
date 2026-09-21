@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -82,13 +83,48 @@ export default function BentoAbout() {
             {/* Gradient left accent bar */}
             <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-cyan-400 via-sky-400 to-emerald-400 opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
             
+            {/* Small avatar in bio card */}
+            <div className="flex items-center gap-3 pl-2 mb-1">
+              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full border border-zinc-700/80 shadow-md">
+                <Image
+                  src="/profile.jpg"
+                  alt="Vedant Tripathi"
+                  fill
+                  className="object-cover object-top"
+                />
+              </div>
+              <div>
+                <p className="font-semibold text-white text-sm">Vedant Tripathi</p>
+                <p className="text-xs text-cyan-400 font-mono">Full-Stack Developer</p>
+              </div>
+            </div>
+
             <div className="text-zinc-300 space-y-4 text-base leading-relaxed pl-2">
               <p>
-                Hi, I&apos;m <span className="font-semibold text-white">Vedant Tripathi</span>, a B.Tech graduate with a strong interest in building useful software and continuously improving my engineering fundamentals.
+                A B.Tech graduate with a strong interest in building useful software and continuously improving my engineering fundamentals.
               </p>
               <p className="text-zinc-400">
                 I enjoy turning ideas into smooth, interactive user experiences with clean, responsive code. I&apos;m always open to learning new technologies and collaborating on real-world projects.
               </p>
+            </div>
+
+            <div className="mt-2 grid grid-cols-2 gap-3 border-t border-zinc-800/80 pt-5 text-sm">
+              <div>
+                <p className="text-zinc-500">Based in</p>
+                <p className="mt-1 font-medium text-zinc-200">Jabalpur, India</p>
+              </div>
+              <div>
+                <p className="text-zinc-500">Open to</p>
+                <p className="mt-1 font-medium text-emerald-400">Full-time roles</p>
+              </div>
+              <div>
+                <p className="text-zinc-500">Primary focus</p>
+                <p className="mt-1 font-medium text-zinc-200">MERN + Python</p>
+              </div>
+              <div>
+                <p className="text-zinc-500">Education</p>
+                <p className="mt-1 font-medium text-zinc-200">B.Tech CSE, 2025</p>
+              </div>
             </div>
           </motion.div>
 

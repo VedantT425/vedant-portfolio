@@ -155,6 +155,21 @@ export function ProjectsSection() {
             </p>
           </div>
 
+          {/* Recruiter-friendly impact summary */}
+          <div className="grid grid-cols-2 gap-3 border-y border-zinc-800/80 py-5 sm:grid-cols-4">
+            {[
+              { value: "< 500ms", label: "verification latency" },
+              { value: "30 FPS", label: "smooth camera feed" },
+              { value: "3-shot", label: "multi-angle enrollment" },
+              { value: "Live", label: "production deployment" },
+            ].map((metric) => (
+              <div key={metric.label} className="text-center sm:text-left">
+                <p className="text-xl font-bold text-cyan-300">{metric.value}</p>
+                <p className="mt-1 text-[11px] uppercase tracking-wide text-zinc-500">{metric.label}</p>
+              </div>
+            ))}
+          </div>
+
           {/* Interactive Feature Explorer (Live Feed, 3-Shot, Dashboard, Architecture) */}
           <div className="my-6">
             <div className="flex items-center justify-between flex-wrap gap-2 border-b border-zinc-800 pb-3">

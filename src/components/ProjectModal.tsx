@@ -67,11 +67,14 @@ export function ProjectModal({ isOpen, onClose, project }: ProjectModalProps) {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="project-modal-title"
             className="relative w-full max-w-3xl max-h-[85vh] overflow-y-auto bg-zinc-950/90 border border-zinc-800 rounded-2xl shadow-2xl backdrop-blur-md"
           >
             {/* Header */}
             <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md">
-              <h2 className="text-xl font-bold text-zinc-100">{project.title}</h2>
+              <h2 id="project-modal-title" className="text-xl font-bold text-zinc-100">{project.title}</h2>
               <div className="flex items-center gap-3">
                 {project.live && project.live !== "#" && (
                   <a

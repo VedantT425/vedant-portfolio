@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Copy, Check, ExternalLink } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Send, Copy, Check, ExternalLink, Download } from 'lucide-react';
 import { clsx } from 'clsx';
 
 /* GitHub icon inline SVG */
@@ -16,10 +16,8 @@ function GithubIcon({ className = "" }: { className?: string }) {
 }
 
 export default function ContactSection() {
-  const [formData, setFormData] = useState({ name: '', email: '' });
-  const [errors, setErrors] = useState({ name: '', email: '' });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [errors, setErrors] = useState({ name: '', email: '', message: '' });
   
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
@@ -29,23 +27,25 @@ export default function ContactSection() {
     let error = '';
     if (field === 'name' && !formData.name.trim()) error = 'Name is required';
     if (field === 'email' && !validateEmail(formData.email)) error = 'Invalid email address';
+    if (field === 'message' && formData.message.trim().length < 10) error = 'Please add at least 10 characters';
     setErrors(prev => ({ ...prev, [field]: error }));
   };
 
-  const isFormValid = Boolean(formData.name.trim() && validateEmail(formData.email));
+  const isFormValid = Boolean(
+    formData.name.trim() &&
+    validateEmail(formData.email) &&
+    formData.message.trim().length >= 10,
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!isFormValid) return;
-    
-    setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setShowSuccess(true);
-      setFormData({ name: '', email: '' });
-      setTimeout(() => setShowSuccess(false), 3000);
-    }, 1000);
+
+    const subject = encodeURIComponent(`Portfolio enquiry from ${formData.name}`);
+    const body = encodeURIComponent(
+      `Name: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}`,
+    );
+    window.location.href = `mailto:vedantripathi05@gmail.com?subject=${subject}&body=${body}`;
   };
 
   const handleCopy = (text: string, field: string) => {
@@ -129,37 +129,51 @@ export default function ContactSection() {
                 {errors.email && <p className="text-red-500 text-xs mt-1 ml-1">{errors.email}</p>}
               </div>
 
+              <div className="relative">
+                <textarea
+                  id="message"
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  onBlur={() => handleBlur('message')}
+                  rows={5}
+                  className={clsx(
+                    "peer w-full resize-none rounded-xl border bg-zinc-900/80 px-4 pb-3 pt-6 text-zinc-100 transition-all duration-300 focus:outline-none",
+                    errors.message
+                      ? "border-red-500"
+                      : "border-zinc-800 focus:border-cyan-400 focus:shadow-[0_0_16px_rgba(6,182,212,0.12)]",
+                  )}
+                  placeholder=" "
+                />
+                <label
+                  htmlFor="message"
+                  className="absolute left-4 top-4 text-zinc-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-focus:top-2 peer-focus:text-xs peer-focus:text-cyan-400"
+                  style={formData.message ? { top: '0.5rem', fontSize: '0.75rem' } : {}}
+                >
+                  Message
+                </label>
+                {errors.message && <p className="text-red-500 text-xs mt-1 ml-1">{errors.message}</p>}
+              </div>
+
               {/* Gradient submit button with shimmer */}
               <motion.button
                 type="submit"
-                disabled={!isFormValid || isSubmitting}
-                whileHover={isFormValid && !isSubmitting ? { scale: 1.02, y: -1 } : {}}
-                whileTap={isFormValid && !isSubmitting ? { scale: 0.98 } : {}}
+                disabled={!isFormValid}
+                whileHover={isFormValid ? { scale: 1.02, y: -1 } : {}}
+                whileTap={isFormValid ? { scale: 0.98 } : {}}
                 className="group relative w-full flex items-center justify-center gap-2 overflow-hidden bg-gradient-to-r from-cyan-500 via-teal-400 to-cyan-500 text-zinc-950 font-bold py-3.5 rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(6,182,212,0.25)] hover:shadow-[0_0_32px_rgba(6,182,212,0.45)] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 {/* Shimmer sweep */}
                 <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
                 <span className="relative z-10 flex items-center gap-2">
-                  {isSubmitting ? "Connecting..." : "Get In Touch"}
+                  Open Email & Send
                   <Send className="w-4 h-4" />
                 </span>
               </motion.button>
             </form>
 
-            {/* Success Toast */}
-            <AnimatePresence>
-              {showSuccess && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="mt-4 p-4 bg-green-500/10 border border-green-500/20 text-green-400 rounded-xl flex items-center gap-2"
-                >
-                  <Check className="w-5 h-5" />
-                  Message sent successfully!
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <p className="mt-4 text-xs leading-relaxed text-zinc-500">
+              This opens your default email app with the message pre-filled. No data is stored on this website.
+            </p>
           </div>
 
           {/* Right Column: Cards */}
@@ -202,6 +216,16 @@ export default function ContactSection() {
 
             {/* Social Links */}
             <div className="flex gap-4 pt-2">
+              <motion.a
+                href="/Vedant-Tripathi-Resume.pdf"
+                download="Vedant-Tripathi-Resume.pdf"
+                whileHover={{ scale: 1.03, y: -3 }}
+                whileTap={{ scale: 0.97 }}
+                className="flex-1 bg-emerald-500/10 border border-emerald-500/30 p-4 rounded-2xl flex items-center justify-center gap-2 text-emerald-300 hover:border-emerald-400/60 hover:bg-emerald-500/20 transition-all duration-300 cursor-pointer"
+              >
+                <Download className="w-5 h-5" />
+                <span className="font-medium">Resume</span>
+              </motion.a>
               <motion.a
                 href="https://linkedin.com/in/vedant-tripathi-800896273"
                 target="_blank"

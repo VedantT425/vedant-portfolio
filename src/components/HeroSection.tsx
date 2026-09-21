@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, CheckCircle2, Mail, ChevronDown } from "lucide-react";
+import { ArrowRight, CheckCircle2, Mail, ChevronDown, ExternalLink, Download } from "lucide-react";
 
 const typewriterStrings = [
   "Full-Stack Developer",
@@ -86,7 +87,7 @@ export function HeroSection() {
         transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
-        className="pointer-events-none absolute -bottom-40 -left-32 -z-10 h-[32rem] w-[32rem] rounded-full bg-sky-500/12 blur-[140px]"
+        className="pointer-events-none absolute -bottom-40 -left-32 -z-10 h-[32rem] w-[32rem] rounded-full bg-violet-600/12 blur-[140px]"
         animate={shouldReduceMotion ? undefined : {
           x: [0, -30, 25, 0],
           y: [0, 20, -15, 0],
@@ -142,11 +143,41 @@ export function HeroSection() {
         initial="hidden"
         animate="show"
       >
+        {/* Profile Photo — Premium circular with glow ring */}
+        <motion.div
+          variants={itemVariants}
+          className="mb-6 relative"
+        >
+          <div className="relative group">
+            {/* Animated glow ring behind photo */}
+            <motion.div
+              className="absolute -inset-1 rounded-full bg-gradient-to-r from-cyan-400 via-violet-500 to-emerald-400 opacity-50 blur-sm group-hover:opacity-75"
+              animate={shouldReduceMotion ? undefined : { rotate: [0, 360] }}
+              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+            />
+            {/* Photo container */}
+            <div className="relative h-32 w-32 overflow-hidden rounded-full border-2 border-zinc-800 bg-zinc-900 shadow-2xl sm:h-36 sm:w-36">
+              <Image
+                src="/profile.jpg"
+                alt="Vedant Tripathi"
+                fill
+                className="object-cover object-top"
+                priority
+              />
+            </div>
+            {/* Online status dot */}
+            <div className="absolute -bottom-0.5 -right-0.5 flex items-center justify-center">
+              <span className="absolute h-5 w-5 animate-ping rounded-full bg-emerald-400 opacity-40" />
+              <span className="relative h-4 w-4 rounded-full border-2 border-zinc-900 bg-emerald-500" />
+            </div>
+          </div>
+        </motion.div>
+
         {/* Open to opportunities badge */}
         <motion.div
           variants={itemVariants}
           whileHover={{ scale: 1.04 }}
-          className="mb-8 inline-flex cursor-default select-none items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/[0.08] px-4 py-1.5 transition-all duration-300 hover:border-emerald-500/40 hover:bg-emerald-500/15 hover:shadow-[0_0_20px_rgba(16,185,129,0.15)]"
+          className="mb-6 inline-flex cursor-default select-none items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/[0.08] px-4 py-1.5 transition-all duration-300 hover:border-emerald-500/40 hover:bg-emerald-500/15 hover:shadow-[0_0_20px_rgba(16,185,129,0.15)]"
         >
           <span className="relative flex h-2.5 w-2.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
@@ -160,7 +191,7 @@ export function HeroSection() {
         {/* Main heading */}
         <motion.h1
           variants={itemVariants}
-          className="mb-6 text-5xl font-extrabold leading-tight tracking-tight text-white sm:text-6xl md:text-7xl"
+          className="mb-4 text-5xl font-extrabold leading-tight tracking-tight text-white sm:text-6xl md:text-7xl"
         >
           Hey, I&apos;m{" "}
           <span className="gradient-text inline-block">Vedant!</span>
@@ -169,7 +200,7 @@ export function HeroSection() {
         {/* Subtitle */}
         <motion.p
           variants={itemVariants}
-          className="mx-auto mb-7 max-w-2xl text-base font-light leading-relaxed text-zinc-400 sm:text-lg"
+          className="mx-auto mb-6 max-w-2xl text-base font-light leading-relaxed text-zinc-400 sm:text-lg"
         >
           I build reliable, high-performance applications with modern web
           technologies and a curiosity for intelligent systems.
@@ -178,7 +209,7 @@ export function HeroSection() {
         {/* Typewriter */}
         <motion.div
           variants={itemVariants}
-          className="mb-10 flex h-8 items-center justify-center font-mono text-lg text-cyan-300 sm:text-xl"
+          className="mb-8 flex h-8 items-center justify-center font-mono text-lg text-cyan-300 sm:text-xl"
           aria-live="polite"
         >
           <span className="mr-2 text-zinc-600">&gt;</span>
@@ -189,7 +220,7 @@ export function HeroSection() {
         {/* CTA Buttons */}
         <motion.div
           variants={itemVariants}
-          className="flex w-full flex-col items-center justify-center gap-4 sm:w-auto sm:flex-row"
+          className="flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row sm:flex-wrap"
         >
           {/* Primary CTA with shimmer */}
           <motion.button
@@ -219,12 +250,37 @@ export function HeroSection() {
             <Mail size={18} />
             Let&apos;s connect
           </motion.button>
+
+          {/* LinkedIn */}
+          <motion.a
+            href="https://linkedin.com/in/vedant-tripathi-800896273"
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="group relative flex w-full items-center justify-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/50 px-6 py-3.5 font-medium text-gray-400 transition-all duration-300 hover:border-zinc-600 hover:bg-zinc-800/60 hover:text-white sm:w-auto"
+          >
+            <ExternalLink size={18} />
+            View LinkedIn
+          </motion.a>
+
+          {/* Resume Download */}
+          <motion.a
+            href="/Vedant-Tripathi-Resume.pdf"
+            download="Vedant-Tripathi-Resume.pdf"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="group relative flex w-full items-center justify-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-6 py-3.5 font-medium text-emerald-300 transition-all duration-300 hover:border-emerald-400/60 hover:bg-emerald-500/20 hover:text-emerald-200 sm:w-auto"
+          >
+            <Download size={18} />
+            Download Resume
+          </motion.a>
         </motion.div>
 
         {/* Trust badges */}
         <motion.div
           variants={itemVariants}
-          className="mt-9 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-zinc-500"
+          className="mt-8 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-zinc-500"
         >
           <span className="flex items-center gap-1.5">
             <CheckCircle2 size={14} className="text-emerald-400/70" />
@@ -234,6 +290,11 @@ export function HeroSection() {
           <span className="flex items-center gap-1.5">
             <CheckCircle2 size={14} className="text-emerald-400/70" />
             Always learning
+          </span>
+          <span className="hidden h-1 w-1 rounded-full bg-zinc-700 sm:block" />
+          <span className="flex items-center gap-1.5">
+            <CheckCircle2 size={14} className="text-emerald-400/70" />
+            B.Tech CSE Graduate
           </span>
         </motion.div>
       </motion.div>

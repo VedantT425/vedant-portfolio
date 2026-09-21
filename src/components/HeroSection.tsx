@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, CheckCircle2, Mail, ChevronDown, ExternalLink, Download } from "lucide-react";
+import { ArrowRight, CheckCircle2, Mail, ChevronDown } from "lucide-react";
 
 const typewriterStrings = [
   "Full-Stack Developer",
@@ -250,31 +250,6 @@ export function HeroSection() {
             <Mail size={18} />
             Let&apos;s connect
           </motion.button>
-
-          {/* LinkedIn */}
-          <motion.a
-            href="https://linkedin.com/in/vedant-tripathi-800896273"
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="group relative flex w-full items-center justify-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/50 px-6 py-3.5 font-medium text-gray-400 transition-all duration-300 hover:border-zinc-600 hover:bg-zinc-800/60 hover:text-white sm:w-auto"
-          >
-            <ExternalLink size={18} />
-            View LinkedIn
-          </motion.a>
-
-          {/* Resume Download */}
-          <motion.a
-            href="/Vedant-Tripathi-Resume.pdf"
-            download="Vedant-Tripathi-Resume.pdf"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="group relative flex w-full items-center justify-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-6 py-3.5 font-medium text-emerald-300 transition-all duration-300 hover:border-emerald-400/60 hover:bg-emerald-500/20 hover:text-emerald-200 sm:w-auto"
-          >
-            <Download size={18} />
-            Download Resume
-          </motion.a>
         </motion.div>
 
         {/* Trust badges */}

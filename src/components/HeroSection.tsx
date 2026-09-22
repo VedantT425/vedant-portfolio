@@ -6,9 +6,9 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, CheckCircle2, Mail, ChevronDown } from "lucide-react";
 
 const typewriterStrings = [
-  "Full-Stack Developer",
-  "MERN Stack Builder",
-  "Open Source Enthusiast",
+  "Full-Stack Developer(MERN)",
+  "Btech CSE Graduate Student",
+  "Always ready to learn new technologies and improve my skills"
 ];
 
 const badges = [
@@ -161,6 +161,7 @@ export function HeroSection() {
                 src="/profile.jpg"
                 alt="Vedant Tripathi"
                 fill
+                sizes="(max-width: 768px) 128px, 144px"
                 className="object-cover object-top"
                 priority
               />
@@ -259,12 +260,12 @@ export function HeroSection() {
         >
           <span className="flex items-center gap-1.5">
             <CheckCircle2 size={14} className="text-emerald-400/70" />
-            Clean, scalable code
+            Always try to learn new things
           </span>
           <span className="hidden h-1 w-1 rounded-full bg-zinc-700 sm:block" />
           <span className="flex items-center gap-1.5">
             <CheckCircle2 size={14} className="text-emerald-400/70" />
-            Always learning
+            Always learning and improving
           </span>
           <span className="hidden h-1 w-1 rounded-full bg-zinc-700 sm:block" />
           <span className="flex items-center gap-1.5">

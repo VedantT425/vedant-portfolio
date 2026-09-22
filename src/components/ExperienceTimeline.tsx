@@ -16,7 +16,7 @@ const experienceData = [
   {
     role: "Data Analytics & Generative AI",
     type: "Project-Based Experience",
-    period: "2024",
+    period: "2024 – 2026",
     description: "Worked with Python-based data analytics tools (Pandas, NumPy) and Power BI for visualization. Explored practical Generative AI workflows for automated insight generation.",
     skills: ["Python", "Pandas", "NumPy", "Power BI", "Generative AI"]
   }
@@ -27,23 +27,23 @@ const educationData = [
     degree: "B.Tech in Computer Science & Engineering",
     institution: "Shri Ram Institute of Technology",
     location: "Jabalpur, Madhya Pradesh",
-    period: "2021 – 2025",
+    period: "2022 – 2026",
     icon: GraduationCap,
-    score: ""
+    score: "7.1 CGPA"
   },
   {
     degree: "Higher Secondary (Class XII)",
     institution: "Senior Secondary School",
     location: "Madhya Pradesh",
-    period: "2020 – 2021",
+    period: "2021 – 2022",
     icon: BookOpen,
-    score: "88%"
+    score: "60%"
   },
   {
     degree: "High School (Class X)",
     institution: "High School",
     location: "Madhya Pradesh",
-    period: "2018 – 2019",
+    period: "2019 – 2020",
     icon: Award,
     score: "60%"
   }

@@ -8,29 +8,18 @@ import {
   Video, 
   Camera, 
   BarChart3, 
-  Lock, 
   ShieldCheck, 
   Clock, 
   Sparkles 
 } from "lucide-react";
 import { ProjectModal } from "./ProjectModal";
 
-/* GitHub icon inline SVG */
-function GithubIcon({ size = 20, className = "" }: { size?: number; className?: string }) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-      <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-      <path d="M9 18c-4.51 2-5-2-7-2" />
-    </svg>
-  );
-}
-
 const flagshipProject = {
   id: 1,
   title: "Vedant FC Attendance System",
   subtitle: "Autonomous Real-Time Biometric Attendance, 3-Shot Enrollment & Analytics Platform",
   year: "2024",
-  status: "Live in Production",
+  status: "Have a look",
   description: "A production-grade contactless biometric attendance system built with Python, OpenCV, dlib, and Flask. Streams real-time camera feed to perform sub-second face verification (< 500ms). Automatically logs Check-In on first arrival and Check-Out on exit with active anti-spoofing protection, instant 3-shot webcam face registration, and an interactive Chart.js analytics dashboard with automated CSV audit exports.",
   techStack: [
     "Python 3.10+", 
@@ -102,43 +91,15 @@ export function ProjectsSection() {
           {/* Top Status Bar */}
           <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-zinc-800/80">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="px-3 py-1 text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 rounded-full flex items-center gap-1.5">
+              <span className="px-3.5 py-1 text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 rounded-full flex items-center gap-2">
                 <span className="relative flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60"></span>
                   <span className="absolute inline-flex h-[150%] w-[150%] -left-[25%] -top-[25%] animate-ping rounded-full bg-emerald-400/20" style={{ animationDuration: '2s' }}></span>
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
                 </span>
-                {flagshipProject.status}
+                <span>{flagshipProject.status}</span>
+                <span className="text-sm">{"\u{1F447}"}</span>
               </span>
-              <span className="px-3 py-1 text-xs font-medium bg-zinc-800/80 text-zinc-300 border border-zinc-700/50 rounded-full">
-                {flagshipProject.year}
-              </span>
-              <span className="hidden sm:inline-block px-3 py-1 text-xs font-medium bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 rounded-full">
-                OpenCV • dlib • Flask • SQLite
-              </span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <a
-                href={flagshipProject.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2.5 bg-zinc-800/70 hover:bg-zinc-700 text-zinc-300 hover:text-zinc-100 rounded-xl transition-colors border border-zinc-700/60"
-                title="View Source on GitHub"
-              >
-                <GithubIcon size={18} />
-              </a>
-              <a
-                href={flagshipProject.loginUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Open Admin Management Portal in a new tab"
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-medium bg-zinc-800/80 hover:bg-zinc-700 text-zinc-200 hover:text-white rounded-xl transition-colors border border-zinc-700/60"
-                title="Admin Management Portal"
-              >
-                <Lock size={14} className="text-zinc-400" />
-                <span>Admin Login</span>
-              </a>
             </div>
           </div>
 
@@ -155,20 +116,6 @@ export function ProjectsSection() {
             </p>
           </div>
 
-          {/* Recruiter-friendly impact summary */}
-          <div className="grid grid-cols-2 gap-3 border-y border-zinc-800/80 py-5 sm:grid-cols-4">
-            {[
-              { value: "< 500ms", label: "verification latency" },
-              { value: "30 FPS", label: "smooth camera feed" },
-              { value: "3-shot", label: "multi-angle enrollment" },
-              { value: "Live", label: "production deployment" },
-            ].map((metric) => (
-              <div key={metric.label} className="text-center sm:text-left">
-                <p className="text-xl font-bold text-cyan-300">{metric.value}</p>
-                <p className="mt-1 text-[11px] uppercase tracking-wide text-zinc-500">{metric.label}</p>
-              </div>
-            ))}
-          </div>
 
           {/* Interactive Feature Explorer (Live Feed, 3-Shot, Dashboard, Architecture) */}
           <div className="my-6">
@@ -473,27 +420,8 @@ export function ProjectsSection() {
             </div>
           </div>
 
-          {/* Tech Stack Pills */}
-          <div className="mb-8">
-            <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">
-              Core Technologies & Frameworks
-            </h4>
-            <div className="flex flex-wrap gap-2">
-              {flagshipProject.techStack.map((tech, idx) => (
-                <motion.span
-                  key={idx}
-                  whileHover={{ scale: 1.08, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-3.5 py-1.5 text-xs font-medium text-zinc-300 bg-zinc-800/70 border border-zinc-700/60 rounded-full hover:border-cyan-400 hover:text-white hover:bg-cyan-950/40 hover:shadow-[0_0_15px_rgba(6,182,212,0.35)] transition-all duration-200 cursor-pointer select-none"
-                >
-                  {tech}
-                </motion.span>
-              ))}
-            </div>
-          </div>
-
           {/* Action CTAs */}
-          <div className="flex flex-wrap items-center gap-4 pt-4">
+          <div className="flex flex-wrap items-center gap-4 pt-2">
             <motion.a
               href={flagshipProject.live}
               target="_blank"
@@ -522,32 +450,6 @@ export function ProjectsSection() {
               <Eye size={17} />
               <span>Inspect Full Architecture</span>
             </motion.button>
-
-            <motion.a
-              href={flagshipProject.loginUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Open Admin Portal in a new tab"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-2 px-5 py-3.5 bg-zinc-900 hover:bg-zinc-850 text-zinc-300 hover:text-white rounded-full font-medium text-sm transition-all border border-zinc-800 hover:border-zinc-600 hover:shadow-lg cursor-pointer"
-            >
-              <Lock size={15} className="text-zinc-400" />
-              <span>Admin Portal</span>
-            </motion.a>
-
-            <motion.a
-              href={flagshipProject.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.1, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              className="p-3.5 bg-zinc-800/60 hover:bg-zinc-700 text-zinc-300 hover:text-white rounded-full transition-all border border-zinc-700/60 hover:border-cyan-400/50 hover:shadow-[0_0_15px_rgba(6,182,212,0.3)] cursor-pointer"
-              aria-label="View Source Code on GitHub"
-              title="View Source Code on GitHub"
-            >
-              <GithubIcon size={19} />
-            </motion.a>
           </div>
 
         </motion.div>

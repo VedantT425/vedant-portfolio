@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Copy, Check, ExternalLink, Mail, MessageSquare } from 'lucide-react';
+import { Send, Copy, Check, ExternalLink, Mail, MessageSquare, Sparkles, ArrowUp } from 'lucide-react';
 import { clsx } from 'clsx';
 
 /* GitHub icon inline SVG */
@@ -15,55 +15,84 @@ function GithubIcon({ className = "" }: { className?: string }) {
   );
 }
 
+/* WhatsApp icon inline SVG */
+function WhatsAppIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+    </svg>
+  );
+}
+
 export default function ContactSection() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [errors, setErrors] = useState({ name: '', email: '', message: '' });
-  const [isSent, setIsSent] = useState(false);
   const [copiedField, setCopiedField] = useState<string | null>(null);
+  const [activeAction, setActiveAction] = useState<string | null>(null);
 
   const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  const handleBlur = (field: string) => {
-    let error = '';
-    if (field === 'name' && !formData.name.trim()) error = 'Name is required';
-    if (field === 'email' && !validateEmail(formData.email)) error = 'Valid email address is required';
-    if (field === 'message' && !formData.message.trim()) error = 'Message is required';
-    setErrors(prev => ({ ...prev, [field]: error }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Check all fields on click
+  const validateForm = () => {
     const nameErr = !formData.name.trim() ? 'Please enter your name' : '';
     const emailErr = !formData.email.trim()
       ? 'Please enter your email'
       : (!validateEmail(formData.email) ? 'Please enter a valid email address' : '');
-    const msgErr = !formData.message.trim() ? 'Please enter your message' : '';
+    const msgErr = !formData.message.trim() ? 'Please write your message' : '';
 
     setErrors({ name: nameErr, email: emailErr, message: msgErr });
+    return !(nameErr || emailErr || msgErr);
+  };
 
-    if (nameErr || emailErr || msgErr) {
-      return;
-    }
+  const handleSendGmail = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validateForm()) return;
 
     const subject = encodeURIComponent(`Portfolio Message from ${formData.name.trim()}`);
     const body = encodeURIComponent(
       `Hello Vedant,\n\n${formData.message.trim()}\n\nBest regards,\n${formData.name.trim()}\nEmail: ${formData.email.trim()}`
     );
-    const mailtoUrl = `mailto:vedantripathi05@gmail.com?subject=${subject}&body=${body}`;
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=vedantripathi05@gmail.com&su=${subject}&body=${body}`;
 
-    // Reliable cross-platform execution
-    const link = document.createElement('a');
-    link.href = mailtoUrl;
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    window.open(gmailUrl, '_blank', 'noopener,noreferrer');
+    setActiveAction('gmail');
+    setTimeout(() => setActiveAction(null), 7000);
+  };
 
-    setIsSent(true);
-    setTimeout(() => setIsSent(false), 8000);
+  const handleSendWhatsApp = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    const text = encodeURIComponent(
+      `Hi Vedant, I saw your portfolio!\n\nName: ${formData.name.trim()}\nEmail: ${formData.email.trim()}\n\nMessage:\n${formData.message.trim()}`
+    );
+    const waUrl = `https://wa.me/918815471744?text=${text}`;
+
+    window.open(waUrl, '_blank', 'noopener,noreferrer');
+    setActiveAction('whatsapp');
+    setTimeout(() => setActiveAction(null), 7000);
+  };
+
+  const handleSendDefaultMail = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    const subject = encodeURIComponent(`Portfolio Message from ${formData.name.trim()}`);
+    const body = encodeURIComponent(
+      `Hello Vedant,\n\n${formData.message.trim()}\n\nBest regards,\n${formData.name.trim()}\nEmail: ${formData.email.trim()}`
+    );
+    window.location.href = `mailto:vedantripathi05@gmail.com?subject=${subject}&body=${body}`;
+    setActiveAction('mail');
+    setTimeout(() => setActiveAction(null), 7000);
+  };
+
+  const handleCopyMessage = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    const fullText = `To: vedantripathi05@gmail.com\nFrom: ${formData.name.trim()} (${formData.email.trim()})\n\n${formData.message.trim()}`;
+    navigator.clipboard.writeText(fullText);
+    setCopiedField('message');
+    setTimeout(() => setCopiedField(null), 3000);
   };
 
   const handleCopy = (text: string, field: string) => {
@@ -89,24 +118,25 @@ export default function ContactSection() {
             Let&apos;s Connect
           </h2>
           <p className="section-intro mx-auto">
-            Have an idea, opportunity or simply want to discuss a project? Send a message directly.
+            Have a project, job opportunity or collaboration in mind? Reach out directly using any Option below.
           </p>
         </div>
 
         <div className="grid gap-10 md:grid-cols-2 lg:gap-16 items-start">
           
-          {/* Left Column: Form */}
-          <div className="bg-zinc-900/50 border border-zinc-800/80 rounded-3xl p-6 sm:p-8 backdrop-blur-sm">
-            <h3 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+          {/* Left Column: Direct Message Form */}
+          <div className="bg-zinc-900/50 border border-zinc-800/80 rounded-3xl p-6 sm:p-8 backdrop-blur-sm shadow-xl">
+            <h3 className="text-lg font-semibold text-white mb-1 flex items-center gap-2">
               <MessageSquare className="w-5 h-5 text-cyan-400" />
-              Send a Direct Message
+              Compose a Message
             </h3>
             <p className="text-xs text-zinc-400 mb-6">
-              Fill the form below and click to compose directly to my inbox.
+              Write your note below and select your preferred sending method.
             </p>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSendGmail} className="space-y-5">
               
+              {/* Name field */}
               <div className="relative">
                 <input
                   type="text"
@@ -116,7 +146,6 @@ export default function ContactSection() {
                     setFormData({ ...formData, name: e.target.value });
                     if (errors.name) setErrors({ ...errors, name: '' });
                   }}
-                  onBlur={() => handleBlur('name')}
                   className={clsx(
                     "peer w-full rounded-xl border bg-zinc-950/80 px-4 pb-2 pt-6 text-zinc-100 transition-all duration-300 focus:outline-none",
                     errors.name 
@@ -135,6 +164,7 @@ export default function ContactSection() {
                 {errors.name && <p className="text-red-400 text-xs mt-1.5 ml-1">{errors.name}</p>}
               </div>
 
+              {/* Email field */}
               <div className="relative">
                 <input
                   type="email"
@@ -144,7 +174,6 @@ export default function ContactSection() {
                     setFormData({ ...formData, email: e.target.value });
                     if (errors.email) setErrors({ ...errors, email: '' });
                   }}
-                  onBlur={() => handleBlur('email')}
                   className={clsx(
                     "peer w-full rounded-xl border bg-zinc-950/80 px-4 pb-2 pt-6 text-zinc-100 transition-all duration-300 focus:outline-none",
                     errors.email 
@@ -163,6 +192,7 @@ export default function ContactSection() {
                 {errors.email && <p className="text-red-400 text-xs mt-1.5 ml-1">{errors.email}</p>}
               </div>
 
+              {/* Message field */}
               <div className="relative">
                 <textarea
                   id="message"
@@ -171,7 +201,6 @@ export default function ContactSection() {
                     setFormData({ ...formData, message: e.target.value });
                     if (errors.message) setErrors({ ...errors, message: '' });
                   }}
-                  onBlur={() => handleBlur('message')}
                   rows={4}
                   className={clsx(
                     "peer w-full resize-none rounded-xl border bg-zinc-950/80 px-4 pb-3 pt-6 text-zinc-100 transition-all duration-300 focus:outline-none",
@@ -191,51 +220,57 @@ export default function ContactSection() {
                 {errors.message && <p className="text-red-400 text-xs mt-1.5 ml-1">{errors.message}</p>}
               </div>
 
-              {/* Gradient submit button */}
-              <motion.button
-                type="submit"
-                whileHover={{ scale: 1.02, y: -1 }}
-                whileTap={{ scale: 0.98 }}
-                className="group relative w-full flex items-center justify-center gap-2 overflow-hidden bg-gradient-to-r from-cyan-500 via-cyan-400 to-teal-400 text-zinc-950 font-bold py-3.5 rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_32px_rgba(6,182,212,0.5)] cursor-pointer"
-              >
-                {/* Shimmer sweep */}
-                <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-                <span className="relative z-10 flex items-center gap-2 text-sm sm:text-base">
-                  Open Email & Send
-                  <Send className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </span>
-              </motion.button>
+              {/* Action Buttons: 2 Primary Channels */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                
+                {/* 1. Send via Gmail Button */}
+                <motion.button
+                  type="submit"
+                  whileHover={{ scale: 1.02, y: -1 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="group relative flex items-center justify-center gap-2 overflow-hidden bg-gradient-to-r from-cyan-500 via-cyan-400 to-teal-400 text-zinc-950 font-bold py-3.5 px-4 rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_32px_rgba(6,182,212,0.5)] cursor-pointer text-sm"
+                  title="Open Gmail with pre-filled message"
+                >
+                  <Mail className="w-4 h-4" />
+                  <span>Send via Gmail</span>
+                  <ExternalLink className="w-3.5 h-3.5 opacity-70" />
+                </motion.button>
+
+                {/* 2. Send via WhatsApp Button */}
+                <motion.button
+                  type="button"
+                  onClick={handleSendWhatsApp}
+                  whileHover={{ scale: 1.02, y: -1 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="group relative flex items-center justify-center gap-2 overflow-hidden bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 px-4 rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(16,185,129,0.25)] hover:shadow-[0_0_30px_rgba(16,185,129,0.4)] cursor-pointer text-sm"
+                  title="Chat instantly on WhatsApp"
+                >
+                  <WhatsAppIcon className="w-4 h-4" />
+                  <span>Send via WhatsApp</span>
+                  <ExternalLink className="w-3.5 h-3.5 opacity-70" />
+                </motion.button>
+              </div>
             </form>
 
             {/* Notification / Feedback Banner */}
             <AnimatePresence>
-              {isSent && (
+              {activeAction && (
                 <motion.div
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="mt-4 p-4 bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 rounded-xl text-xs space-y-1.5"
+                  exit={{ opacity: 0, y: -8 }}
+                  className="mt-4 p-4 bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 rounded-xl text-xs space-y-1"
                 >
-                  <p className="font-semibold flex items-center gap-2 text-emerald-400">
-                    <Check className="w-4 h-4" />
-                    Opening your email client...
+                  <p className="font-semibold flex items-center gap-2 text-cyan-400">
+                    <Sparkles className="w-4 h-4" />
+                    Opening your message composer!
                   </p>
                   <p className="text-zinc-300">
-                    If your email client did not launch automatically, you can directly email me at:{" "}
-                    <a
-                      href={`mailto:vedantripathi05@gmail.com?subject=Portfolio%20Inquiry`}
-                      className="text-cyan-400 underline hover:text-cyan-300"
-                    >
-                      vedantripathi05@gmail.com
-                    </a>
+                    Your note has been formatted and placed into the composer. Simply hit send!
                   </p>
                 </motion.div>
               )}
             </AnimatePresence>
-
-            <p className="mt-4 text-[11px] leading-relaxed text-zinc-500">
-              💡 Clicking &ldquo;Open Email &amp; Send&rdquo; opens your default email client (like Gmail, Outlook, or Apple Mail) pre-filled with your message.
-            </p>
           </div>
 
           {/* Right Column: Direct Contact & Social Links */}
@@ -243,7 +278,9 @@ export default function ContactSection() {
             
             {/* Email Direct Action Card */}
             <motion.a 
-              href="mailto:vedantripathi05@gmail.com"
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=vedantripathi05@gmail.com&su=Portfolio%20Inquiry"
+              target="_blank"
+              rel="noopener noreferrer"
               whileHover={{ y: -3, scale: 1.01 }}
               className="surface-card group flex cursor-pointer items-center justify-between p-5 border border-zinc-800 hover:border-cyan-500/40 transition-all"
             >
@@ -252,7 +289,7 @@ export default function ContactSection() {
                   <Mail className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-xs text-zinc-500 font-medium">Email Directly</p>
+                  <p className="text-xs text-zinc-500 font-medium">Direct Email</p>
                   <p className="text-sm font-semibold text-zinc-200 group-hover:text-white transition-colors">
                     vedantripathi05@gmail.com
                   </p>
@@ -272,18 +309,20 @@ export default function ContactSection() {
               </button>
             </motion.a>
 
-            {/* Phone Card */}
+            {/* WhatsApp Card */}
             <motion.a 
-              href="tel:+918815471744"
+              href="https://wa.me/918815471744?text=Hi%20Vedant,%20I%20saw%20your%20portfolio"
+              target="_blank"
+              rel="noopener noreferrer"
               whileHover={{ y: -3, scale: 1.01 }}
               className="surface-card group flex cursor-pointer items-center justify-between p-5 border border-zinc-800 hover:border-emerald-500/40 transition-all"
             >
               <div className="flex items-center gap-3.5">
                 <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:bg-emerald-500/20 group-hover:scale-105 transition-all">
-                  <span className="text-sm font-bold">📞</span>
+                  <WhatsAppIcon className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-xs text-zinc-500 font-medium">Phone / WhatsApp</p>
+                  <p className="text-xs text-zinc-500 font-medium">WhatsApp / Chat</p>
                   <p className="text-sm font-semibold text-zinc-200 group-hover:text-white transition-colors">
                     +91 8815471744
                   </p>
@@ -303,7 +342,7 @@ export default function ContactSection() {
               </button>
             </motion.a>
 
-            {/* Clean 2-column Social Links: LinkedIn & GitHub (No resume) */}
+            {/* Clean 2-column Social Links: LinkedIn & GitHub */}
             <div className="grid grid-cols-2 gap-4 pt-1">
               <motion.a
                 href="https://linkedin.com/in/vedant-tripathi-800896273"
@@ -329,6 +368,20 @@ export default function ContactSection() {
                 <span className="text-zinc-300 font-medium text-sm group-hover:text-white transition-colors">GitHub</span>
                 <ExternalLink className="w-4 h-4 text-zinc-500 group-hover:text-cyan-400 transition-colors" />
               </motion.a>
+            </div>
+
+            {/* Back to Top button in right-hand side empty space */}
+            <div className="pt-2">
+              <motion.button
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className="group w-full flex items-center justify-center gap-2 p-3.5 bg-zinc-900/40 hover:bg-zinc-900/80 border border-zinc-800 hover:border-cyan-400/50 rounded-2xl text-zinc-400 hover:text-cyan-300 hover:shadow-[0_0_20px_rgba(6,182,212,0.15)] transition-all duration-300 cursor-pointer text-xs font-semibold"
+                aria-label="Back to top"
+              >
+                <span>Back to Top</span>
+                <ArrowUp className="w-4 h-4 transition-transform duration-300 group-hover:-translate-y-1 text-cyan-400" />
+              </motion.button>
             </div>
           </div>
           

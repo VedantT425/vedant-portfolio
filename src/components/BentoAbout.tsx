@@ -90,12 +90,12 @@ export default function BentoAbout() {
                   src="/profile.jpg"
                   alt="Vedant Tripathi"
                   fill
+                  sizes="48px"
                   className="object-cover object-top"
                 />
               </div>
               <div>
                 <p className="font-semibold text-white text-sm">Vedant Tripathi</p>
-                <p className="text-xs text-cyan-400 font-mono">Full-Stack Developer</p>
               </div>
             </div>
 
@@ -106,25 +106,6 @@ export default function BentoAbout() {
               <p className="text-zinc-400">
                 I enjoy turning ideas into smooth, interactive user experiences with clean, responsive code. I&apos;m always open to learning new technologies and collaborating on real-world projects.
               </p>
-            </div>
-
-            <div className="mt-2 grid grid-cols-2 gap-3 border-t border-zinc-800/80 pt-5 text-sm">
-              <div>
-                <p className="text-zinc-500">Based in</p>
-                <p className="mt-1 font-medium text-zinc-200">Jabalpur, India</p>
-              </div>
-              <div>
-                <p className="text-zinc-500">Open to</p>
-                <p className="mt-1 font-medium text-emerald-400">Full-time roles</p>
-              </div>
-              <div>
-                <p className="text-zinc-500">Primary focus</p>
-                <p className="mt-1 font-medium text-zinc-200">MERN + Python</p>
-              </div>
-              <div>
-                <p className="text-zinc-500">Education</p>
-                <p className="mt-1 font-medium text-zinc-200">B.Tech CSE, 2025</p>
-              </div>
             </div>
           </motion.div>
 
